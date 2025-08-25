@@ -1,0 +1,291 @@
+[
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BikesController",
+    "Method": "GetBikes",
+    "RelativePath": "api/Bikes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BikesController",
+    "Method": "AddBike",
+    "RelativePath": "api/Bikes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bike",
+        "Type": "BikeDealerMgtAPI.Models.BikeStore",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BikesController",
+    "Method": "GetBikeById",
+    "RelativePath": "api/Bikes/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BikesController",
+    "Method": "UpdateBike",
+    "RelativePath": "api/Bikes/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "bike",
+        "Type": "BikeDealerMgtAPI.Models.BikeStore",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BikesController",
+    "Method": "DeleteBike",
+    "RelativePath": "api/Bikes/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BikesController",
+    "Method": "GetBikesByName",
+    "RelativePath": "api/Bikes/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealerMastersController",
+    "Method": "GetAllDealerMasters",
+    "RelativePath": "api/DealerMasters",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealerMastersController",
+    "Method": "AddDealerMaster",
+    "RelativePath": "api/DealerMasters",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dealerMaster",
+        "Type": "BikeDealerMgtAPI.Models.DealerMaster",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealerMastersController",
+    "Method": "GetDealerMasterById",
+    "RelativePath": "api/DealerMasters/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealerMastersController",
+    "Method": "UpdateDealerMaster",
+    "RelativePath": "api/DealerMasters/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dealerMaster",
+        "Type": "BikeDealerMgtAPI.Models.DealerMaster",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealerMastersController",
+    "Method": "DeleteDealerMaster",
+    "RelativePath": "api/DealerMasters/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealersController",
+    "Method": "GetAllDealers",
+    "RelativePath": "api/Dealers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealersController",
+    "Method": "AddDealer",
+    "RelativePath": "api/Dealers",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dealer",
+        "Type": "BikeDealerMgtAPI.Models.Dealer",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealersController",
+    "Method": "GetDealerById",
+    "RelativePath": "api/Dealers/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealersController",
+    "Method": "UpdateDealer",
+    "RelativePath": "api/Dealers/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dealer",
+        "Type": "BikeDealerMgtAPI.Models.Dealer",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealersController",
+    "Method": "DeleteDealer",
+    "RelativePath": "api/Dealers/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.DealersController",
+    "Method": "GetDealersByName",
+    "RelativePath": "api/Dealers/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgt.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[BikeDealerMgt.WeatherForecast, BikeDealerMgtAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  }
+]
