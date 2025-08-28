@@ -42,6 +42,7 @@ namespace BikeDealerMgtAPI.Services
 		}
 		public async Task<List<BikeStore>> GetAllBikes()
 		{
+			//var bikes = await _context.BikeStores.Include(b=>b.DealerMasters).ThenInclude(dm => dm.Dealer).ToListAsync();
 			var bikes = await _context.BikeStores.ToListAsync();
 			return bikes;
 		}
@@ -53,7 +54,7 @@ namespace BikeDealerMgtAPI.Services
 		public async Task<List<BikeStore>> FindBikeByName(string name)
 		{
 			return await _context.BikeStores
-						.Where(b => b.ModelName.Contains(name))
+						.Where(b => b.ModelName.ToLower().Contains(name.ToLower()))
 						.ToListAsync();
 		}
 	}

@@ -55,7 +55,7 @@ namespace BikeDealerMgtAPI.Services
 		public async Task<List<Dealer>> FindDealerByName(string Name)
 		{
 			return await _context.Dealers
-						.Where(d => d.DealerName.Contains(Name))
+						.Where(d => d.DealerName.ToLower().Contains(Name.ToLower()))
 						.ToListAsync();
 		}
 	}

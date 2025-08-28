@@ -9,6 +9,7 @@ namespace BikeDealerMgtAPI.Services
 		public Task<int> DeleteDM(int id);
 		public Task<List<DealerMaster>> GetAllDMs();
 		public Task<DealerMaster?> FindDMById(int id);
-		//public Task<List<DealerMaster>> FindDMByName(string name);
+		public Task<List<Dealer>> FindDealersByBikeName(string name);
+		public Task<List<BikeStore>> FindBikesByDealerName(string name);
 	}
 }

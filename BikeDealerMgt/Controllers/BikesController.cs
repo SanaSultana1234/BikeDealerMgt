@@ -10,7 +10,7 @@ namespace BikeDealerMgtAPI.Controllers
 	public class BikesController : ControllerBase
 	{
 		private readonly IBikeService _BikeService;
-
+		
 		public BikesController(IBikeService bs) {
 			_BikeService = bs;
 		}
@@ -59,9 +59,9 @@ namespace BikeDealerMgtAPI.Controllers
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateBike(int id, [FromBody] BikeStore bike)
 		{
-			if (!ModelState.IsValid || bike == null) return BadRequest("Invalid Bike Data");
+			if (!ModelState.IsValid || bike == null || bike.BikeId!=id) return BadRequest("Invalid Bike Data");
 			BikeStore? result = await _BikeService.UpdateBike(id, bike);
-			if (result == null) return BadRequest("Unable to update bike. Try again later.");
+			if (result == null) return NotFound($"Bike with ID {id} not found.");
 			return Ok(result);
 		}
 
@@ -73,5 +73,7 @@ namespace BikeDealerMgtAPI.Controllers
 			if (result == 0) return NotFound();
 			return NoContent();
 		}
+
+
 	}
 }

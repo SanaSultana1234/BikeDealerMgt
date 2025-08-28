@@ -40,19 +40,40 @@ namespace BikeDealerMgtAPI.Services
 		}
 		public async Task<List<DealerMaster>> GetAllDMs()
 		{
-			var DMs = await _context.DealerMasters.ToListAsync();
+			var DMs = await _context.DealerMasters
+									.Include(dm => dm.Bike)
+									.Include(dm => dm.Dealer)
+									.ToListAsync();
 			return DMs;
 		}
 		public async Task<DealerMaster> FindDMById(int id)
 		{
-			var dm = await _context.DealerMasters.FindAsync(id);
+			var dm = await _context.DealerMasters
+							.Include(dm => dm.Bike)
+							.Include(dm => dm.Dealer)
+							.FirstOrDefaultAsync(dm => dm.DealerMasterId==id);
 			return dm;
 		}
-		//public async Task<List<DealerMaster>> FindDMByName(string name)
-		//{
-		//	return await _context.DealerMasters
-		//				.Where(b => b..Contains(name))
-		//				.ToListAsync();
-		//}
+		public async Task<List<Dealer>> FindDealersByBikeName(string name)
+		{
+			var dealers = await _context.DealerMasters
+						.Include(dm => dm.Bike)
+						.Include(dm => dm.Dealer)
+						.Where(dm => dm.Bike.ModelName.ToLower().Contains(name.ToLower()))
+						.Select(dm => dm.Dealer)
+						.ToListAsync();
+			return dealers;
+		}
+
+		public async Task<List<BikeStore>> FindBikesByDealerName(string name)
+		{
+			var bikes = await _context.DealerMasters
+						.Include(dm => dm.Bike)
+						.Include(dm => dm.Dealer)
+						.Where(dm => dm.Dealer.DealerName.ToLower().Contains(name.ToLower()))
+						.Select(dm => dm.Bike)
+						.ToListAsync();
+			return bikes;
+		}
 	}
 }

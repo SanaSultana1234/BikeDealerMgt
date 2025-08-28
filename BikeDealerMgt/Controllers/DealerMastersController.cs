@@ -37,13 +37,22 @@ namespace BikeDealerMgtAPI.Controllers
 			return Ok(dealerMaster);
 		}
 
-		////api/dealermasters/search?name=xyz
-		//[HttpGet("search")]
-		//public async Task<IActionResult> GetDealerMastersByName([FromQuery] string name)
-		//{
-		//	var dealerMasters = await _DealerMasterService.Fin(name);
-		//	return Ok(dealerMasters);
-		//}
+		//api/dealermasters/bike?name=xyz
+		[HttpGet("bike")]
+		public async Task<IActionResult> GetDealersByBikeName([FromQuery] string name)
+		{
+			var dealerMasters = await _DealerMasterService.FindDealersByBikeName(name);
+			return Ok(dealerMasters);
+		}
+
+		//api/dealermasters/dealer?name=xyz
+		[HttpGet("dealer")]
+		public async Task<IActionResult> GetBikesByDealerName([FromQuery] string name)
+		{
+			var dealerMasters = await _DealerMasterService.FindBikesByDealerName(name);
+			return Ok(dealerMasters);
+		}
+
 
 		//api/dealermaster
 		[HttpPost]
