@@ -1,5 +1,69 @@
 [
   {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BikeDealerMgtAPI.Models.Auth.LoginModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AuthController",
+    "Method": "RegisterDealer",
+    "RelativePath": "api/Auth/register-dealer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BikeDealerMgtAPI.Models.Auth.DealerRegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AuthController",
+    "Method": "RegisterManufacturer",
+    "RelativePath": "api/Auth/register-manufacturer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BikeDealerMgtAPI.Models.Auth.ManufacturerRegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AuthController",
+    "Method": "RegisterUser",
+    "RelativePath": "api/Auth/register-user",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BikeDealerMgtAPI.Models.Auth.UserRegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BikeDealerMgtAPI.Controllers.BikesController",
     "Method": "GetBikes",
     "RelativePath": "api/Bikes",

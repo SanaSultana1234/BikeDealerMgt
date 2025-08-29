@@ -77,3 +77,13 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+/*
+BIKE STORE DBFIRST
+Scaffold-DbContext "Data Source=LAPTOP-5C1CRU1C;Initial Catalog=BikeDealerMgmtDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -verbose
+
+IDENTITY CODEFIRST
+Add-Migration AddIdentityTables -Context AuthDbContext
+Update-Database -Context AuthDbContext
+*/
