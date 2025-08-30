@@ -109,9 +109,9 @@ namespace BikeDealerMgtAPI.Controllers
 				return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "Manufacturer creation failed!", Errors = result.Errors });
 
 			await EnsureRolesExist();
-			await _userManager.AddToRoleAsync(user, UserRoles.Manufacturer);
+			await _userManager.AddToRoleAsync(user, UserRoles.User); // Not Manufacturer yet
 
-			return Ok(new { Status = "Success", Message = "Manufacturer registered successfully" });
+			return Ok(new { Status = "Pending", Message = "Manufacturer registration submitted for approval" });
 		}
 
 		// Login

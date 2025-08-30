@@ -1,5 +1,6 @@
 ﻿using BikeDealerMgtAPI.Models;
 using BikeDealerMgtAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BikeDealerMgtAPI.Controllers
@@ -17,6 +18,7 @@ namespace BikeDealerMgtAPI.Controllers
 
 		//api/dealer
 		[HttpGet]
+		[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
 		public async Task<IActionResult> GetAllDealers()
 		{
 			var dealers = await _dealerService.GetAllDealers();
@@ -27,6 +29,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/dealer/{id}
+		[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetDealerById(int id)
 		{
@@ -38,6 +41,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/dealer/search?name=xyz
+		[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
 		[HttpGet("search")]
 		public async Task<IActionResult> GetDealersByName([FromQuery] string name)
 		{
@@ -46,6 +50,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/dealer
+		[Authorize(Roles = "Dealer,Admin")]
 		[HttpPost]
 		public async Task<IActionResult> AddDealer([FromBody] Dealer dealer)
 		{
@@ -58,6 +63,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/dealer/{id}
+		[Authorize(Roles = "Dealer,Admin")]
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateDealer(int id, [FromBody] Dealer dealer)
 		{
@@ -72,6 +78,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/dealer/{id}
+		[Authorize(Roles = "Dealer,Admin")]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteDealer(int id)
 		{

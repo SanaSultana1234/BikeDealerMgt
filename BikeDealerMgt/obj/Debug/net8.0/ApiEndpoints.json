@@ -1,5 +1,47 @@
 [
   {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AdminController",
+    "Method": "ApproveManufacturer",
+    "RelativePath": "api/Admin/approve-manufacturer/{manufacturerId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "manufacturerId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AdminController",
+    "Method": "AssignAdminRole",
+    "RelativePath": "api/Admin/assign-admin-role/{userId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AdminController",
+    "Method": "ListUsers",
+    "RelativePath": "api/Admin/list-users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BikeDealerMgtAPI.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/Auth/login",
