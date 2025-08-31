@@ -4,11 +4,11 @@ namespace BikeDealerMgtAPI.Models.Auth
 {
     public class DealerRegisterModel:UserRegisterModel
     {
-
-        [Required]
         public string StoreName { get; set; }
-
-        public string GSTNumber { get; set; }
-    }
+		[Required]
+		public int StorageCapacity { get; set; }
+		[Required]
+		public int Inventory { get; set; }
+	}
 
 }

@@ -3,6 +3,7 @@ using BikeDealerMgtAPI.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BikeDealerMgtAPI.Controllers
 {
@@ -13,11 +14,13 @@ namespace BikeDealerMgtAPI.Controllers
 	{
 		private readonly UserManager<AuthUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly BikeDealerMgmtDbContext _context;
 
-		public AdminController(UserManager<AuthUser> userManager, RoleManager<IdentityRole> roleManager)
+		public AdminController(UserManager<AuthUser> userManager, RoleManager<IdentityRole> roleManager, BikeDealerMgmtDbContext context)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
+			_context = context;
 		}
 
 
@@ -62,6 +65,34 @@ namespace BikeDealerMgtAPI.Controllers
 
 			return Ok(new { Status = "Success", Message = $"User {user.UserName} has been granted Admin role" });
 		}
+
+		//delete user. If user is dealer then delete from dealers table too
+		[HttpDelete("delete-user/{userId}")]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> DeleteUser(string userId)
+		{
+			// 1. Find user by Id
+			var user = await _userManager.FindByIdAsync(userId);
+			if (user == null)
+				return NotFound(new { Status = "Error", Message = "User not found" });
+
+			// 2. Delete dealer record if exists
+			var dealer = await _context.Dealers.FirstOrDefaultAsync(d => d.UserId == userId);
+			if (dealer != null)
+			{
+				_context.Dealers.Remove(dealer);
+				await _context.SaveChangesAsync();
+			}
+
+			// 3. Remove user roles
+			var result = await _userManager.DeleteAsync(user);
+			if (!result.Succeeded)
+				return BadRequest(result.Errors);
+
+			return Ok("User and related dealer deleted successfully");
+		}
+
+
 
 		///List all Users with their Roles
 		[HttpGet("list-users")]

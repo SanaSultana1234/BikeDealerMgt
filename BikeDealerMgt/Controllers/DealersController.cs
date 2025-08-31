@@ -2,6 +2,7 @@
 using BikeDealerMgtAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BikeDealerMgtAPI.Controllers
 {
@@ -16,7 +17,19 @@ namespace BikeDealerMgtAPI.Controllers
 			_dealerService = dealerService;
 		}
 
-		//api/dealer
+
+		// Helper: Get DealerId from Claims
+		private int? GetDealerIdFromClaims()
+		{
+			var dealerIdClaim = User.FindFirst("DealerId");
+			if (dealerIdClaim != null && int.TryParse(dealerIdClaim.Value, out int dealerId))
+				return dealerId;
+
+			return null;
+		}
+
+
+		//api/dealers
 		[HttpGet]
 		[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
 		public async Task<IActionResult> GetAllDealers()
@@ -40,6 +53,31 @@ namespace BikeDealerMgtAPI.Controllers
 			return Ok(dealer);
 		}
 
+		//Below code is just for testing purpose
+		//// GET: api/dealers/{id}
+		//[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
+		//[HttpGet("{id}")]
+		//public async Task<IActionResult> GetDealerById(int id)
+		//{
+		//	var dealer = await _dealerService.FindDealerById(id);
+		//	if (dealer == null)
+		//		return NotFound($"Dealer with ID {id} not found.");
+
+		//	if (User.IsInRole("Admin"))
+		//		return Ok(dealer);
+
+		//	if (User.IsInRole("Dealer"))
+		//	{
+		//		var dealerId = GetDealerIdFromClaims();
+		//		if (dealerId == null || dealerId.Value != id)
+		//			return Forbid();
+		//		return Ok(dealer);
+		//	}
+
+		//	return Forbid();
+		//}
+		///////////////////////////////////////////////////
+
 		//api/dealer/search?name=xyz
 		[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
 		[HttpGet("search")]
@@ -57,9 +95,24 @@ namespace BikeDealerMgtAPI.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var result = await _dealerService.AddDealer(dealer);
-			if (result == null) return BadRequest("Unable to create new Dealer. Try again later.");
-			return CreatedAtAction(nameof(GetDealerById), new { id = result.DealerId }, result);
+			if (User.IsInRole("Admin"))
+			{
+				var result = await _dealerService.AddDealer(dealer);
+				return CreatedAtAction(nameof(GetDealerById), new { id = result.DealerId }, result);
+			}
+
+			if (User.IsInRole("Dealer"))
+			{
+				var dealerId = GetDealerIdFromClaims();
+				if (dealerId != null)
+					return BadRequest("Dealer already has a record."); // prevent duplicate dealers
+
+				dealer.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // link to user
+				var result = await _dealerService.AddDealer(dealer);
+				return CreatedAtAction(nameof(GetDealerById), new { id = result.DealerId }, result);
+			}
+
+			return Forbid();
 		}
 
 		//api/dealer/{id}
@@ -67,26 +120,58 @@ namespace BikeDealerMgtAPI.Controllers
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateDealer(int id, [FromBody] Dealer dealer)
 		{
-			if (!ModelState.IsValid || dealer == null || dealer.DealerId != id)
+			if (dealer == null)
 				return BadRequest("Invalid dealer data.");
 
-			var result = await _dealerService.UpdateDealer(id, dealer);
-			if (result == null)
-				return NotFound($"Dealer with ID {id} not found.");
+			if (User.IsInRole("Admin"))
+			{
+				var result = await _dealerService.UpdateDealer(id, dealer);
+				return result == null ? NotFound() : Ok(result);
+			}
+			if (User.IsInRole("Dealer"))
+			{
+				var dealerId = GetDealerIdFromClaims();
+				if (dealerId == null || dealerId.Value != id)
+					return Forbid();
 
-			return Ok(result);
+				dealer.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+				var result = await _dealerService.UpdateDealer(id, dealer);
+				return result == null ? NotFound() : Ok(result);
+			}
+
+			return Forbid();
 		}
 
-		//api/dealer/{id}
+		// DELETE: api/dealers/{id}
 		[Authorize(Roles = "Dealer,Admin")]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteDealer(int id)
 		{
-			var result = await _dealerService.DeleteDealer(id);
-			if (result ==0)
-				return NotFound($"Dealer with ID {id} not found.");
+			if (User.IsInRole("Admin"))
+			{
+				var result = await _dealerService.DeleteDealer(id);
 
-			return NoContent();
+				if (result == 0)
+					return NotFound($"Dealer with {id} not found");
+
+				if (result == -1)
+					return BadRequest("Cannot delete this dealer because it has bikes assigned.");
+
+				return NoContent();
+			}
+
+			if (User.IsInRole("Dealer"))
+			{
+				var dealerId = GetDealerIdFromClaims();
+				if (dealerId == null || dealerId.Value != id)
+					return Forbid();
+
+				var result = await _dealerService.DeleteDealer(id);
+				if (result == -1) return BadRequest("Cannot delete this dealer because it has bikes assigned.");
+				return result == 0 ? NotFound($"Dealer with {id} not found") : NoContent();
+			}
+
+			return Forbid();
 		}
 	}
 }

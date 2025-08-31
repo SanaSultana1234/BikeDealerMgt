@@ -16,7 +16,7 @@ namespace BikeDealerMgtAPI.Controllers
 			_DealerMasterService = dealerMasterService;
 		}
 
-		//api/dealermaster
+		//api/dealermasters
 		[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
 		[HttpGet]
 		public async Task<IActionResult> GetAllDealerMasters()
@@ -28,7 +28,7 @@ namespace BikeDealerMgtAPI.Controllers
 			return Ok(dealerMasters);
 		}
 
-		//api/dealermaster/{id}
+		//api/dealermasters/{id}
 		[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetDealerMasterById(int id)
@@ -60,7 +60,7 @@ namespace BikeDealerMgtAPI.Controllers
 
 
 		//api/dealermaster
-		[Authorize(Roles = "Dealer,Admin,Manufacturer")]
+		[Authorize(Roles = "Admin,Manufacturer")]
 		[HttpPost]
 		public async Task<IActionResult> AddDealerMaster([FromBody] DealerMaster dealerMaster)
 		{
@@ -73,7 +73,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/dealermaster/{id}
-		[Authorize(Roles = "Dealer,Admin,Manufacturer")]
+		[Authorize(Roles = "Admin,Manufacturer")]
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateDealerMaster(int id, [FromBody] DealerMaster dealerMaster)
 		{
@@ -88,7 +88,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		// api/dealermaster/{id}
-		[Authorize(Roles = "Dealer,Admin,Manufacturer")]
+		[Authorize(Roles = "Admin,Manufacturer")]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteDealerMaster(int id)
 		{

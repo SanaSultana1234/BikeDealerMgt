@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BikeDealerMgtAPI.Controllers
 {
@@ -17,13 +19,16 @@ namespace BikeDealerMgtAPI.Controllers
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly IConfiguration _configuration;
 
+		private readonly BikeDealerMgmtDbContext _db;
+		
 		public AuthController(UserManager<AuthUser> userManager,
 							  RoleManager<IdentityRole> roleManager,
-							  IConfiguration configuration)
+							  IConfiguration configuration, BikeDealerMgmtDbContext db)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
 			_configuration = configuration;
+			_db = db;
 		}
 
 		// Register User
@@ -71,7 +76,8 @@ namespace BikeDealerMgtAPI.Controllers
 				Email = model.Email,
 				Address = model.Address,
 				StoreName = model.StoreName,
-				GSTNumber = model.GSTNumber
+				StorageCapacity = model.StorageCapacity,
+				Inventory = model.Inventory
 			};
 
 			var result = await _userManager.CreateAsync(user, model.Password);
@@ -81,7 +87,26 @@ namespace BikeDealerMgtAPI.Controllers
 			await EnsureRolesExist();
 			await _userManager.AddToRoleAsync(user, UserRoles.Dealer);
 
-			return Ok(new { Status = "Success", Message = "Dealer registered successfully" });
+			// Create Dealers row linked to this user
+			var dealer = new Dealer
+			{
+				UserId = user.Id,
+				DealerName = user.UserName!,       // from Identity Username
+				Address = model.Address ?? string.Empty, // from registration Address
+				City = null,
+				State = null,
+				ZipCode = null,
+				StorageCapacity = (model.StorageCapacity==null)? 0: model.StorageCapacity,
+				Inventory = (model.Inventory == null) ? 0 : model.Inventory
+				// If you want StoreName/GSTNumber persisted,
+				// add columns for them (nullable) and set here.
+			};
+
+			_db.Dealers.Add(dealer);
+			await _db.SaveChangesAsync();
+
+			// 4) (Optional) Return a JWT now or ask them to login and get one.
+			return Ok(new { message = "Dealer registered", username = user.UserName });
 		}
 
 		//Register Manufacturer
@@ -125,17 +150,9 @@ namespace BikeDealerMgtAPI.Controllers
 			if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
 				return Unauthorized(new { Status = "Error", Message = "Invalid credentials" });
 
-			var userRoles = await _userManager.GetRolesAsync(user);
-			var authClaims = new List<Claim>
-			{
-				new Claim(ClaimTypes.Name, user.UserName),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-			};
-
-			foreach (var role in userRoles)
-			{
-				authClaims.Add(new Claim(ClaimTypes.Role, role));
-			}
+			//build auth claims to store username id, and dealer id if a dealer
+			var authClaims = await BuildClaimsAsync(user);
+			authClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
 			//GetToken
 			var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
@@ -154,6 +171,31 @@ namespace BikeDealerMgtAPI.Controllers
 				Expiration = token.ValidTo
 			});
 		}
+
+		private async Task<IList<Claim>> BuildClaimsAsync(AuthUser user)
+		{
+			var claims = new List<Claim>
+	{
+		new Claim(ClaimTypes.NameIdentifier, user.Id),
+		new Claim(ClaimTypes.Name, user.UserName ?? ""),
+		new Claim(ClaimTypes.Email, user.Email ?? "")
+	};
+
+			var roles = await _userManager.GetRolesAsync(user);
+			claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+
+			// Attach DealerId if present
+			var dealerId = await _db.Dealers
+				.Where(d => d.UserId == user.Id)
+				.Select(d => d.DealerId)
+				.SingleOrDefaultAsync();
+
+			if (dealerId > 0)
+				claims.Add(new Claim("DealerId", dealerId.ToString()));
+
+			return claims;
+		}
+
 
 		private async Task EnsureRolesExist()
 		{

@@ -33,6 +33,22 @@
   },
   {
     "ContainingType": "BikeDealerMgtAPI.Controllers.AdminController",
+    "Method": "DeleteUser",
+    "RelativePath": "api/Admin/delete-user/{userId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.AdminController",
     "Method": "ListUsers",
     "RelativePath": "api/Admin/list-users",
     "HttpMethod": "GET",

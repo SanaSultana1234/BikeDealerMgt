@@ -36,6 +36,8 @@ namespace BikeDealerMgtAPI.Services
 		{
 			var bike = await _context.BikeStores.FindAsync(id);
 			if (bike == null) return 0;
+			var bike2 = await _context.DealerMasters.FirstOrDefaultAsync(dm => dm.BikeId==id);
+			if (bike2 != null) return -1;
 
 			_context.BikeStores.Remove(bike);
 			return await _context.SaveChangesAsync();

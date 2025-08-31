@@ -10,7 +10,8 @@ namespace BikeDealerMgtAPI.Models
 
 		// Dealer-specific fields
 		public string? StoreName { get; set; }
-		public string? GSTNumber { get; set; }
+		public int? StorageCapacity { get; set; } = 0;
+		public int? Inventory { get; set; } = 0;
 		public bool IsDealerVerified { get; set; } = false;
 
 		// Manufacturer-specific fields

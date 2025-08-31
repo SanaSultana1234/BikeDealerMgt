@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\AspNetRole.cs" />
+    <Compile Remove="Models\AspNetRoleClaim.cs" />
+    <Compile Remove="Models\AspNetUser.cs" />
+    <Compile Remove="Models\AspNetUserClaim.cs" />
+    <Compile Remove="Models\AspNetUserLogin.cs" />
+    <Compile Remove="Models\AspNetUserToken.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.19" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />

@@ -77,7 +77,8 @@ namespace BikeDealerMgtAPI.Controllers
 		public async Task<IActionResult> DeleteBike(int id)
 		{
 			int result = await _BikeService.DeleteBike(id);
-			if (result == 0) return NotFound();
+			if (result == 0) return NotFound($"Bike with ID {id} not found.");
+			if (result == -1) return BadRequest("Cannot delete this bike because it is assigned to a dealer.");
 			return NoContent();
 		}
 
