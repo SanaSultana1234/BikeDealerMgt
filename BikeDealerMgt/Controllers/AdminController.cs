@@ -93,7 +93,6 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 
-
 		///List all Users with their Roles
 		[HttpGet("list-users")]
 		public async Task<IActionResult> ListUsers()
@@ -120,6 +119,33 @@ namespace BikeDealerMgtAPI.Controllers
 
 			return Ok(userList);
 		}
+
+		/// <summary>
+		/// Unassign a role (Admin or Dealer) from a user
+		/// </summary>
+		[HttpPost("unassign-role/{userId}/{roleName}")]
+		public async Task<IActionResult> UnassignRole(string userId, string roleName)
+		{
+			var user = await _userManager.FindByIdAsync(userId);
+			if (user == null)
+				return NotFound(new { Status = "Error", Message = "User not found" });
+
+			// Check if role exists
+			if (!await _roleManager.RoleExistsAsync(roleName))
+				return BadRequest(new { Status = "Error", Message = $"Role '{roleName}' does not exist" });
+
+			// Check if user has the role
+			if (!await _userManager.IsInRoleAsync(user, roleName))
+				return BadRequest(new { Status = "Error", Message = $"User does not have the role '{roleName}'" });
+
+			// Remove the role
+			var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+			if (!result.Succeeded)
+				return BadRequest(new { Status = "Error", Message = "Failed to remove role", Errors = result.Errors });
+
+			return Ok(new { Status = "Success", Message = $"Role '{roleName}' has been removed from user {user.UserName}" });
+		}
+
 	}
 }
 

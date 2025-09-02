@@ -3,12 +3,16 @@ using BikeDealerMgtAPI.Models;
 using System.ComponentModel;
 using OfficeOpenXml;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace BikeDealerMgtAPI.Controllers
 {
+	
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "Admin,Manufacturer")]
+
 	public class BulkController : ControllerBase
 	{
 		private readonly BikeDealerMgmtDbContext _context;
