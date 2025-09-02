@@ -61,6 +61,10 @@ builder.Services.AddAuthentication(options =>
 	};
 });
 
+//For parsing excel files
+AppContext.SetSwitch("EPPlus:LicenseContext", true);
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

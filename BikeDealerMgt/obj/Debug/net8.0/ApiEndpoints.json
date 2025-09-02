@@ -217,6 +217,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BulkController",
+    "Method": "AddBikes",
+    "RelativePath": "api/Bulk/AddBikes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BikeDealerMgtAPI.Controllers.BulkController",
+    "Method": "BulkDelete",
+    "RelativePath": "api/Bulk/DeleteBikes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bikeIds",
+        "Type": "System.Collections.Generic.List\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BikeDealerMgtAPI.Controllers.DealerMastersController",
     "Method": "GetAllDealerMasters",
     "RelativePath": "api/DealerMasters",

@@ -8,12 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9D511F00-9976-47E5-911D-568182108F5C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		Models\AspNetRole.cs = Models\AspNetRole.cs
-		Models\AspNetRoleClaim.cs = Models\AspNetRoleClaim.cs
-		Models\AspNetUser.cs = Models\AspNetUser.cs
-		Models\AspNetUserClaim.cs = Models\AspNetUserClaim.cs
-		Models\AspNetUserLogin.cs = Models\AspNetUserLogin.cs
-		Models\AspNetUserToken.cs = Models\AspNetUserToken.cs
 	EndProjectSection
 EndProject
 Global
