@@ -34,12 +34,12 @@ public partial class Dealer
 
     public int Inventory { get; set; } = 0;
 
-    public string UserId { get; set; } = null!;
+    public string? UserId { get; set; } = null!;
 
     [InverseProperty("Dealer")]
     public virtual ICollection<DealerMaster> DealerMasters { get; set; } = new List<DealerMaster>();
 
     [ForeignKey("UserId")]
     [InverseProperty("Dealer")]
-    public virtual AspNetUser User { get; set; } = null!;
+    public virtual AspNetUser? User { get; set; } = null!;
 }

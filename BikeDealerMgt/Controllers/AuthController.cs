@@ -9,10 +9,13 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
+using Microsoft.AspNetCore.Cors;
+
 namespace BikeDealerMgtAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[EnableCors]
 	public class AuthController : ControllerBase
 	{
 		private readonly UserManager<AuthUser> _userManager;
@@ -84,29 +87,10 @@ namespace BikeDealerMgtAPI.Controllers
 			if (!result.Succeeded)
 				return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "Dealer creation failed!", Errors = result.Errors });
 
-			await EnsureRolesExist();
-			await _userManager.AddToRoleAsync(user, UserRoles.Dealer);
+            await EnsureRolesExist();
+            await _userManager.AddToRoleAsync(user, UserRoles.User); // Not Dealer yet
 
-			// Create Dealers row linked to this user
-			var dealer = new Dealer
-			{
-				UserId = user.Id,
-				DealerName = user.UserName!,       // from Identity Username
-				Address = model.Address ?? string.Empty, // from registration Address
-				City = null,
-				State = null,
-				ZipCode = null,
-				StorageCapacity = (model.StorageCapacity==null)? 0: model.StorageCapacity,
-				Inventory = (model.Inventory == null) ? 0 : model.Inventory
-				// If you want StoreName/GSTNumber persisted,
-				// add columns for them (nullable) and set here.
-			};
-
-			_db.Dealers.Add(dealer);
-			await _db.SaveChangesAsync();
-
-			// 4) (Optional) Return a JWT now or ask them to login and get one.
-			return Ok(new { message = "Dealer registered", username = user.UserName });
+            return Ok(new { Status = "Pending", Message = "Dealer registration submitted for approval" });
 		}
 
 		//Register Manufacturer
@@ -176,13 +160,14 @@ namespace BikeDealerMgtAPI.Controllers
 		{
 			var claims = new List<Claim>
 	{
-		new Claim(ClaimTypes.NameIdentifier, user.Id),
-		new Claim(ClaimTypes.Name, user.UserName ?? ""),
-		new Claim(ClaimTypes.Email, user.Email ?? "")
+		new Claim("id", user.Id),
+		new Claim("username", user.UserName ?? ""),
+		new Claim("email", user.Email ?? "")
 	};
 
 			var roles = await _userManager.GetRolesAsync(user);
 			claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+			claims.AddRange(roles.Select(r => new Claim("role", r)));
 
 			// Attach DealerId if present
 			var dealerId = await _db.Dealers

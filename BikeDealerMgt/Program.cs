@@ -61,8 +61,13 @@ builder.Services.AddAuthentication(options =>
 	};
 });
 
+//add cors to services
+builder.Services.AddCors();
+
 //For parsing excel files
 AppContext.SetSwitch("EPPlus:LicenseContext", true);
+
+
 
 
 var app = builder.Build();
@@ -75,6 +80,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//use cors here
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+});
+
 
 app.UseAuthorization();
 

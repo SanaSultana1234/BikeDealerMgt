@@ -22,9 +22,9 @@ public partial class DealerMaster
 
     [ForeignKey("BikeId")]
     [InverseProperty("DealerMasters")]
-    public virtual BikeStore Bike { get; set; } = null!;
+    public virtual BikeStore? Bike { get; set; } = null!;
 
     [ForeignKey("DealerId")]
     [InverseProperty("DealerMasters")]
-    public virtual Dealer Dealer { get; set; } = null!;
+    public virtual Dealer? Dealer { get; set; } = null!;
 }
