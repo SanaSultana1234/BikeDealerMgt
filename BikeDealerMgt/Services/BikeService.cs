@@ -10,7 +10,13 @@ namespace BikeDealerMgtAPI.Services
 		public BikeService(BikeDealerMgmtDbContext ctx) { 
 			_context = ctx;
 		}
-		public async Task<BikeStore?> AddBike(BikeStore bike)
+
+        public async Task<int> GetBikeCount()
+        {
+            return await _context.BikeStores.CountAsync();
+        }
+
+        public async Task<BikeStore?> AddBike(BikeStore bike)
 		{
 			if (bike == null) return null;
 			_context.BikeStores.Add(bike);

@@ -10,7 +10,7 @@ namespace BikeDealerMgtAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")] // Only Admin can access these endpoints
+     // Only Admin can access these endpoints
     [EnableCors]
     public class AdminController : ControllerBase
     {
@@ -25,8 +25,18 @@ namespace BikeDealerMgtAPI.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "User,Dealer,Admin,Manufacturer")]
+        [HttpGet("users/count")]
+        public async Task<IActionResult> GetUserCount()
+        {
+            var count = await _userManager.Users.CountAsync();
+            return Ok(count);
+        }
+
+
 
         //Approve Dealer
+        [Authorize(Roles = "Admin")]
         [HttpPost("approve-dealer/{dealerId}")]
         public async Task<IActionResult> ApproveDealer(string dealerId)
         {
@@ -87,7 +97,8 @@ namespace BikeDealerMgtAPI.Controllers
 
 
 
-        ///Approve Manufacturer
+        ///Approve Manufacturer <summary>
+        [Authorize(Roles = "Admin")]
         [HttpPost("approve-manufacturer/{manufacturerId}")]
         public async Task<IActionResult> ApproveManufacturer(string manufacturerId)
         {
@@ -110,7 +121,8 @@ namespace BikeDealerMgtAPI.Controllers
             return Ok(new { Status = "Success", Message = $"Manufacturer {manufacturer.UserName} approved successfully" });
         }
 
-        ///Assign Admin Role to a User
+        ///Assign Admin Role to a User <summary>
+        [Authorize(Roles = "Admin")]
         [HttpPost("assign-admin-role/{userId}")]
         public async Task<IActionResult> AssignAdminRole(string userId)
         {
@@ -130,6 +142,7 @@ namespace BikeDealerMgtAPI.Controllers
         }
 
         //delete user. If user is dealer then delete from dealers table too
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete-user/{userId}")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
@@ -157,6 +170,7 @@ namespace BikeDealerMgtAPI.Controllers
 
         ///List all Users with their Roles
         [HttpGet("list-users")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListUsers()
         {
             var users = _userManager.Users.ToList();
@@ -182,11 +196,39 @@ namespace BikeDealerMgtAPI.Controllers
             return Ok(userList);
         }
 
+        [Authorize(Roles = "Admin,User,Manufacturer,Dealer")]
+        [HttpGet("get-user/{userId}")]
+        public async Task<IActionResult> GetUserById(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound(new { Status = "Error", Message = "User not found" });
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var userData = new
+            {
+                user.Id,
+                user.UserName,
+                user.Email,
+                user.Address,
+                user.StoreName,
+                user.CompanyName,
+                Roles = roles,
+                user.IsDealerVerified,
+                user.IsManufacturerVerified
+            };
+
+            return Ok(userData);
+        }
+
+
         /// <summary>
         /// Unassign a role (Admin or Dealer) from a user
         /// </summary>
 
         [HttpPost("unassign-role/{userId}/{roleName}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnassignRole(string userId, string roleName)
         {
             var user = await _userManager.FindByIdAsync(userId);

@@ -4,7 +4,8 @@ namespace BikeDealerMgtAPI.Services
 {
 	public interface IBikeService
 	{
-		public Task<BikeStore> AddBike(BikeStore bike);
+        public Task<int> GetBikeCount();
+        public Task<BikeStore> AddBike(BikeStore bike);
 		public Task<BikeStore> UpdateBike(int id, BikeStore bike);
 		public Task<int> DeleteBike(int id);
 		public Task<List<BikeStore>> GetAllBikes();

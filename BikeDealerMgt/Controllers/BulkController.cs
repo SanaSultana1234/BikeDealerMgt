@@ -12,7 +12,7 @@ namespace BikeDealerMgtAPI.Controllers;
 
 	[Route("api/[controller]")]
 	[ApiController]
-	//[Authorize(Roles = "Admin,Manufacturer")]
+	[Authorize(Roles = "Admin,Manufacturer")]
     [EnableCors]
     public class BulkController : ControllerBase
 {

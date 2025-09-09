@@ -10,7 +10,14 @@ namespace BikeDealerMgtAPI.Services
 		{
 			_context = ctx;
 		}
-		public async Task<DealerMaster?> AddDM(DealerMaster dm)
+
+        // DealerMasterService.cs
+        public async Task<int> GetDealerMasterCount()
+        {
+            return await _context.DealerMasters.CountAsync();
+        }
+
+        public async Task<DealerMaster?> AddDM(DealerMaster dm)
 		{
 			if (dm == null || dm.BikesDelivered == null || dm.BikesDelivered <= 0) return null;
 
@@ -147,6 +154,7 @@ namespace BikeDealerMgtAPI.Services
 						.Include(dm => dm.Dealer)
 						.Where(dm => dm.Bike.ModelName.ToLower().Contains(name.ToLower()))
 						.Select(dm => dm.Dealer)
+						.Distinct()
 						.ToListAsync();
 			return dealers;
 		}
@@ -158,6 +166,7 @@ namespace BikeDealerMgtAPI.Services
 						.Include(dm => dm.Dealer)
 						.Where(dm => dm.Dealer.DealerName.ToLower().Contains(name.ToLower()))
 						.Select(dm => dm.Bike)
+						.Distinct()
 						.ToListAsync();
 			return bikes;
 		}

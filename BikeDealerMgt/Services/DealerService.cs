@@ -13,7 +13,14 @@ namespace BikeDealerMgtAPI.Services
 			_context = ctx;
 			_userManager = userManager;
 		}
-		public async Task<Dealer?> AddDealer(Dealer dealer)
+
+        // DealerService.cs
+        public async Task<int> GetDealerCount()
+        {
+            return await _context.Dealers.CountAsync();
+        }
+
+        public async Task<Dealer?> AddDealer(Dealer dealer)
 		{
 			if (dealer == null) return null;
 			_context.Dealers.Add(dealer);

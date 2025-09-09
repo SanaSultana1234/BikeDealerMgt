@@ -18,8 +18,16 @@ namespace BikeDealerMgtAPI.Controllers
 			_BikeService = bs;
 		}
 
-		//api/bikes
-		//[Authorize(Roles="Customer,Dealer,Admin,Manufacturer")]
+        [Authorize(Roles = "User,Dealer,Admin,Manufacturer")]
+        [HttpGet("count")]
+        public async Task<IActionResult> GetBikeCount()
+        {
+            int count = await _BikeService.GetBikeCount();
+            return Ok(count);
+        }
+
+        //api/bikes
+        [Authorize(Roles="User,Dealer,Admin,Manufacturer")]
 		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> GetBikes()
@@ -31,7 +39,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/bike/{id}
-		//[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
+		[Authorize(Roles = "User,Dealer,Admin,Manufacturer")]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetBikeById(int id)
 		{
@@ -42,7 +50,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/bike/search?name=xyz
-		//[Authorize(Roles = "Customer,Dealer,Admin,Manufacturer")]
+		[Authorize(Roles = "User,Dealer,Admin,Manufacturer")]
 		[HttpGet("search")]
 		public async Task<IActionResult> GetBikesByName([FromQuery] string name)
 		{
@@ -53,7 +61,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/bike
-		//[Authorize(Roles = "Admin,Manufacturer")]
+		[Authorize(Roles = "Admin,Manufacturer")]
 		[HttpPost]
 		public async Task<IActionResult> AddBike([FromBody] BikeStore bike)
 		{
@@ -64,7 +72,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/bike/{id}
-		//[Authorize(Roles = "Admin,Manufacturer")]
+		[Authorize(Roles = "Admin,Manufacturer")]
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateBike(int id, [FromBody] BikeStore bike)
 		{
@@ -75,7 +83,7 @@ namespace BikeDealerMgtAPI.Controllers
 		}
 
 		//api/bike/{id}
-		//[Authorize(Roles = "Admin,Manufacturer")]
+		[Authorize(Roles = "Admin,Manufacturer")]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteBike(int id)
 		{
